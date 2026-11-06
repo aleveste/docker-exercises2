@@ -6,11 +6,16 @@ services:
     container_name: backend
     ports:
       - 8080:8080
-    restart: unless-stopped
     environment:
       - REDIS_HOST=redis
+      - POSTGRES_HOST=db
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DATABASE=db
     depends_on:
       - redis
+      - db
+    restart: unless-stopped
 
   frontend:
     build:
@@ -21,6 +26,21 @@ services:
       - 5001:5001
     depends_on:
       - backend
+    restart: unless-stopped
   redis:
     image: redis:alpine
     container_name: redis
+
+  db:
+    image: postgres:17
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=db
+    volumes:
+      - database:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  database:

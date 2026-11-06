@@ -6,6 +6,11 @@ services:
     container_name: backend
     ports:
       - 8080:8080
+    restart: unless-stopped
+    environment:
+      - REDIS_HOST=redis
+    depends_on:
+      - redis
 
   frontend:
     build:
@@ -16,3 +21,6 @@ services:
       - 5001:5001
     depends_on:
       - backend
+  redis:
+    image: redis:alpine
+    container_name: redis

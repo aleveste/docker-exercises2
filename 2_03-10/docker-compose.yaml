@@ -4,8 +4,6 @@ services:
       context: ../example-app/backend
       dockerfile: Dockerfile.backend
     container_name: backend
-    ports:
-      - 8080:8080
     environment:
       - REDIS_HOST=redis
       - POSTGRES_HOST=db
@@ -23,10 +21,8 @@ services:
       context: ../example-app/frontend
       dockerfile: Dockerfile.frontend
     container_name: frontend
-    ports:
-      - 5001:5001
     environment:
-      - REACT_APP_BACKEND_URL=http://backend:8000
+      - REACT_APP_BACKEND_URL=http://localhost:8000
     depends_on:
       - backend
     restart: unless-stopped
